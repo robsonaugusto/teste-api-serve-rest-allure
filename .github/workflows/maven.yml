@@ -1,4 +1,4 @@
-name: Integração Contínua Java com Maven (REST-assured & Selenium)
+name: Integração Contínua Java com Maven (REST-assured)
 
 on:
   workflow_dispatch:
