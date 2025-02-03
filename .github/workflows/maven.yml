@@ -25,7 +25,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven (REST-assured)
-        run: mvn test --file C:\Workspace\teste-api-serve-rest\pom.xml
+        run: mvn test --file ./Workspace/teste-api-serve-rest/pom.xml
 
 
       - name: Copy results to root target folder
