@@ -51,15 +51,14 @@ jobs:
           allure_history: allure-history
           allure_results: ./target/allure-results
 
-      - name: Ensure docs directory exists
+      - name: Ensure gh-pages branch exists
         run: |
-          mkdir -p docs
-          cp -r allure-history/* docs/
+          git fetch origin gh-pages || (git checkout --orphan gh-pages && git commit --allow-empty -m "Initialize gh-pages" && git push origin gh-pages)
 
-      - name: Publish test report to GitHub Pages (main branch)
+      - name: Publish test report to GitHub Pages (gh-pages branch)
         uses: peaceiris/actions-gh-pages@v3
         if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: main
-          publish_dir: docs
+          publish_branch: gh-pages
+          publish_dir: allure-history
