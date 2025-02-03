@@ -25,24 +25,17 @@ jobs:
           cache: maven
 
       - name: Build with Maven (REST-assured)
-        run: mvn test --file ./atg-api/pom.xml
+        run: mvn test --file ./teste-api-serve-rest/pom.xml
 
       - name: Copy results to root target folder
         run: |
           mkdir -p target/allure-results
-          cp -r atg-api/target/allure-results/. target/allure-results
+          cp -r teste-api-serve-rest/target/allure-results/. target/allure-results
 
       - name: Install Google Chrome
         run: |
           chmod +x ./InstallChrome.sh
           ./InstallChrome.sh
-
-      - name: Build with Maven (Selenium)
-        run: mvn test -Dheadless=true --file ./atg-selenium/pom.xml
-
-      - name: Copy results to root target folder
-        run: |
-          cp -r atg-selenium/target/allure-results/. target/allure-results
 
       - name: Build test report
         uses: simple-elf/allure-report-action@v1.7
