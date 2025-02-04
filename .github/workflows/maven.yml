@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write  # Permite que o Actions faça push na branch gh-pages
+  contents: write
 
 jobs:
   build:
@@ -59,11 +59,16 @@ jobs:
           name: allure-report
           path: allure-report
 
+      - name: Ensure index.html is at root
+        run: |
+          ls -la allure-report  # Verifica arquivos dentro do diretório
+          mv allure-report/* ./  # Move os arquivos para a raiz
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: allure-report
+          folder: .
 
   show-report-url:
     needs: deploy-allure-report
