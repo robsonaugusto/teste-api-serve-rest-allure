@@ -1,62 +1,38 @@
 name: Integração Contínua Java com Maven (REST-assured)
 
 on:
-  workflow_dispatch:
-    inputs:
-      tags:
-        description: 'Test scenario tags'
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
           java-version: '21'
-          distribution: 'temurin'
-          cache: maven
 
-      - name: Build with Maven (REST-assured)
-        run: mvn test --file ./Workspace/teste-api-serve-rest/pom.xml
-
-      - name: Copy results to root target folder
-        run: |
-          mkdir -p target/allure-results
-          cp -r teste-api-serve-rest/target/allure-results/. target/allure-results
-
-      - name: Install Google Chrome
-        run: |
-          chmod +x ./InstallChrome.sh
-          ./InstallChrome.sh
-
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
         with:
-          allure_history: allure-history
-          allure_results: ./target/allure-results
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-      - name: Move allure-history to docs
-        run: |
-          mkdir -p docs
-          cp -r allure-history/. docs/
+      - name: Build and run tests with Maven
+        run: mvn clean test
 
-      - name: Ensure gh-pages branch exists
-        run: |
-          git fetch origin gh-pages || (git checkout --orphan gh-pages && git commit --allow-empty -m "Initialize gh-pages" && git push origin gh-pages)
-
-      - name: Publish test report to GitHub Pages (gh-pages branch)
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-          personal_token: ${{ secrets.GH_PAT }}
-          publish_branch: gh-pages
-          publish_dir: docs
+      - name: Generate Allure Report
+        run: mvn allure:serve
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-21-openjdk-amd64
