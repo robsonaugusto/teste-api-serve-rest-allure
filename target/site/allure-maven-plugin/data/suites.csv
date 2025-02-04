@@ -1,0 +1,4 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Mon Feb 03 20:15:36 BRT 2025","Mon Feb 03 20:15:37 BRT 2025","426","","tests.Usuarios","","tests.Usuarios","testCadastrarUsuario","Endpoints Para Cadastro de Usuario",""
+"passed","Mon Feb 03 20:15:37 BRT 2025","Mon Feb 03 20:15:37 BRT 2025","360","","tests.Usuarios","","tests.Usuarios","testExcluirUsuarioCriado","testExcluirUsuarioCriado()",""
+"passed","Mon Feb 03 20:15:37 BRT 2025","Mon Feb 03 20:15:37 BRT 2025","370","","tests.Usuarios","","tests.Usuarios","testBuscarUsuarioCriado","testBuscarUsuarioCriado()",""
