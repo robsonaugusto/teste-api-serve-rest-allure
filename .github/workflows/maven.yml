@@ -59,10 +59,14 @@ jobs:
           name: allure-report
           path: allure-report
 
+      - name: List files in target/site/allure-maven-plugin
+        run: |
+          ls -la target/site/allure-maven-plugin  # Verifica os arquivos no diretório onde o Allure geralmente coloca o relatório
+
       - name: Ensure index.html is at root
         run: |
           ls -la allure-report  # Verifica arquivos dentro do diretório
-          mv allure-report/index.html ./  # Move o index.html para a raiz
+          mv allure-report/target/site/allure-maven-plugin/index.html ./  # Move o index.html para a raiz
           ls -la  # Verifica se o index.html está na raiz após o movimento
           if [ ! -f "index.html" ]; then exit 1; fi  # Verifica se o index.html existe
 
