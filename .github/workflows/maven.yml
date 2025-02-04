@@ -27,7 +27,6 @@ jobs:
       - name: Build with Maven (REST-assured)
         run: mvn test --file ./Workspace/teste-api-serve-rest/pom.xml
 
-
       - name: Copy results to root target folder
         run: |
           mkdir -p target/allure-results
@@ -45,6 +44,11 @@ jobs:
           allure_history: allure-history
           allure_results: ./target/allure-results
 
+      - name: Move allure-history to docs
+        run: |
+          mkdir -p docs
+          cp -r allure-history/. docs/
+
       - name: Ensure gh-pages branch exists
         run: |
           git fetch origin gh-pages || (git checkout --orphan gh-pages && git commit --allow-empty -m "Initialize gh-pages" && git push origin gh-pages)
@@ -55,4 +59,4 @@ jobs:
         with:
           personal_token: ${{ secrets.GH_PAT }}
           publish_branch: gh-pages
-          publish_dir: allure-history
+          publish_dir: docs
