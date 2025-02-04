@@ -61,7 +61,7 @@ jobs:
 
       - name: Ensure index.html is at root
         run: |
-          ls -la allure-report  # Verifica arquivos dentro do diretório
+          ls -la allure-report/target/site/allure-maven-plugin  # Verifica os arquivos no diretório
           mv allure-report/target/site/allure-maven-plugin/index.html ./  # Move o index.html para a raiz
           ls -la  # Verifica se o index.html está na raiz após o movimento
           if [ ! -f "index.html" ]; then exit 1; fi  # Verifica se o index.html existe
@@ -69,8 +69,8 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: ./  # Garante que os arquivos estão na raiz para o deploy
+          branch: gh-pages  # Certifica-se de que o deploy será feito no branch gh-pages
+          folder: ./  # A pasta correta para o deploy está na raiz
 
   show-report-url:
     needs: deploy-allure-report
