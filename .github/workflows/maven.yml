@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/site/allure-maven-plug/inindex.html  # Caminho corrigido
+          path: target/site/allure-maven-plugin
 
   deploy-allure-report:
     needs: build
@@ -61,11 +61,21 @@ jobs:
 
       - name: Ensure index.html is at root
         run: |
-          mv allure-report/allure-maven.html allure-report/index.html  # Renomeia para index.html
-          ls -la allure-report  # Lista os arquivos para conferir
+          ls -la allure-report  # Verifica arquivos dentro do diretório
+          mv allure-report/* ./  # Move os arquivos para a raiz
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: allure-report  # Faz deploy do relatório com index.html correto
+          folder: .
+
+  show-report-url:
+    needs: deploy-allure-report
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show Allure Report URL
+        run: |
+          echo "✅ O relatório Allure foi publicado com sucesso!"
+          echo "🔗 Acesse o relatório em: https://robsonaugusto.github.io/teste-api-serve-rest-allure/"
