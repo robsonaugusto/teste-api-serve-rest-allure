@@ -59,10 +59,6 @@ jobs:
           name: allure-report
           path: allure-report
 
-      - name: List files in target/site/allure-maven-plugin
-        run: |
-          ls -la target/site/allure-maven-plugin  # Verifica os arquivos no diretório onde o Allure geralmente coloca o relatório
-
       - name: Ensure index.html is at root
         run: |
           ls -la allure-report  # Verifica arquivos dentro do diretório
