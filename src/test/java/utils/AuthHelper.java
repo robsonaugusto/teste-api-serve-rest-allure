@@ -15,7 +15,7 @@ public class AuthHelper {
     public static void authenticate() {
         if (token == null) { // Evita múltiplas autenticações desnecessárias
             Map<String, String> login = new HashMap<>();
-            login.put("email", "fulano@qa.com");
+            login.put("email", "testeteRB@qa.com.br");
             login.put("password", "teste");
 
             token = given()

@@ -63,12 +63,14 @@ jobs:
         run: |
           ls -la allure-report  # Verifica arquivos dentro do diretório
           mv allure-report/* ./  # Move os arquivos para a raiz
+          ls -la  # Verifica se o index.html está na raiz após mover os arquivos
+          if [ ! -f "index.html" ]; then exit 1; fi  # Verifica se o index.html existe
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: .
+          folder: ./  # Garante que os arquivos estão na raiz para o deploy
 
   show-report-url:
     needs: deploy-allure-report
