@@ -65,11 +65,18 @@ jobs:
           name: allure-report
           path: allure-report
 
-      - name: Ensure index.html is at root
+      - name: Ensure correct Allure report file is at root
         run: |
-          ls -la allure-report/site/  # Verifica os arquivos dentro de site/
-          mv allure-report/site/index.html ./ || echo "index.html não encontrado"
-          if [ ! -f "index.html" ]; then exit 1; fi
+          ls -la allure-report/site/  # Lista os arquivos dentro da pasta site/
+          if [ -f "allure-report/site/index.html" ]; then
+            mv allure-report/site/index.html ./;
+          elif [ -f "allure-report/site/allure-maven.html" ]; then
+            mv allure-report/site/allure-maven.html ./index.html;
+          else
+            echo "Nenhum arquivo de relatório encontrado!";
+            exit 1;
+          fi
+          ls -la  # Lista os arquivos na raiz para conferir
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
