@@ -37,13 +37,18 @@ jobs:
         run: mvn clean test
 
       - name: Generate Allure Report
-        run: mvn allure:report
+        run: |
+          mvn allure:aggregate
+          mvn allure:report
+          
+      - name: Verify Allure Report structure
+        run: ls -la target/site/
 
       - name: Upload Allure Report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/site/allure-maven-plugin
+          path: target/allure-report  # Caminho correto para o relatório
 
   deploy-allure-report:
     needs: build
@@ -61,9 +66,8 @@ jobs:
 
       - name: Ensure index.html is at root
         run: |
-          ls -la allure-report/target/site/allure-maven-plugin  # Verifica os arquivos no diretório
-          mv allure-report/target/site/allure-maven-plugin/index.html ./  # Move o index.html para a raiz
-          ls -la  # Verifica se o index.html está na raiz após o movimento
+          ls -la allure-report/  # Verifica os arquivos no diretório
+          mv allure-report/index.html ./  # Move o index.html para a raiz
           if [ ! -f "index.html" ]; then exit 1; fi  # Verifica se o index.html existe
 
       - name: Deploy to GitHub Pages
