@@ -40,15 +40,18 @@ jobs:
         run: |
           mvn allure:aggregate
           mvn allure:report
-          
-      - name: Verify Allure Report structure
-        run: ls -la target/site/
+
+      - name: Verificar estrutura da pasta target após geração do Allure
+        run: ls -la target/allure-report || ls -la target/site/allure-maven-plugin
 
       - name: Upload Allure Report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/allure-report  # Caminho correto para o relatório
+          path: |
+            target/allure-report
+            target/site/allure-maven-plugin
+          retention-days: 7
 
   deploy-allure-report:
     needs: build
@@ -67,14 +70,14 @@ jobs:
       - name: Ensure index.html is at root
         run: |
           ls -la allure-report/  # Verifica os arquivos no diretório
-          mv allure-report/index.html ./  # Move o index.html para a raiz
-          if [ ! -f "index.html" ]; then exit 1; fi  # Verifica se o index.html existe
+          mv allure-report/index.html ./ || mv allure-report/allure-maven-plugin/index.html ./  # Move o index.html para a raiz
+          if [ ! -f "index.html" ]; then exit 1; fi
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # Certifica-se de que o deploy será feito no branch gh-pages
-          folder: ./  # A pasta correta para o deploy está na raiz
+          branch: gh-pages
+          folder: ./
 
   show-report-url:
     needs: deploy-allure-report
