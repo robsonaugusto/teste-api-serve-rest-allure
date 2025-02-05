@@ -1,5 +1,7 @@
 name: Integração Contínua Java com Maven (REST-assured)
+
 on: [push]
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,7 +15,7 @@ jobs:
           java-version: '21'
 
       - name: Run tests
-        run: ./gradlew clean test
+        run: mvn clean test  # Substituído para usar Maven em vez de Gradle
 
       - name: Load test report history
         uses: actions/checkout@v3
@@ -38,5 +40,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
-          
-  
