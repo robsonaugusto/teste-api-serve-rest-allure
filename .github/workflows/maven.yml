@@ -37,18 +37,13 @@ jobs:
         run: mvn clean test
 
       - name: Generate Allure Report
-        run: |
-          mvn allure:aggregate
-          mvn allure:report
-
-      - name: Verificar estrutura da pasta target após geração do Allure
-        run: ls -la target/site/ || ls -la target/allure-report/
+        run: mvn allure:aggregate allure:report
 
       - name: Upload Allure Report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/site/
+          path: target/site/allure-report/
           retention-days: 7
 
   deploy-allure-report:
@@ -65,24 +60,20 @@ jobs:
           name: allure-report
           path: allure-report
 
-      - name: Ensure correct Allure report file is at root
+      - name: Verify and prepare Allure Report for deployment
         run: |
-          ls -la allure-report/site/  # Lista os arquivos dentro da pasta site/
-          if [ -f "allure-report/site/index.html" ]; then
-            mv allure-report/site/index.html ./;
-          elif [ -f "allure-report/site/allure-maven.html" ]; then
-            mv allure-report/site/allure-maven.html ./index.html;
-          else
-            echo "Nenhum arquivo de relatório encontrado!";
-            exit 1;
+          ls -la allure-report/
+          if [ ! -f "allure-report/index.html" ]; then
+            echo "Erro: index.html não encontrado. Verificando arquivos..."
+            find allure-report/ -type f
+            exit 1
           fi
-          ls -la  # Lista os arquivos na raiz para conferir
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: ./
+          folder: allure-report/
 
   show-report-url:
     needs: deploy-allure-report
