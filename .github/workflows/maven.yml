@@ -17,8 +17,11 @@ jobs:
       - name: Run tests
         run: mvn clean test
 
+      - name: Run Allure report
+        run: mvn allure:aggregate allure:report  # Gera o relatório Allure
+
       - name: List Allure results
-        run: ls -la target/allure-results  # Verifica se os resultados dos testes estão no diretório correto
+        run: ls -la target/allure-results  # Verifica se o diretório de resultados foi criado
 
       - name: Load test report history
         uses: actions/checkout@v3
@@ -34,7 +37,7 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: target/allure-results  # Ajuste o caminho para garantir que está apontando para target/allure-results
+          allure_results: target/allure-results  # Ajuste para o diretório correto
 
       - name: Publish test report
         uses: peaceiris/actions-gh-pages@v3
