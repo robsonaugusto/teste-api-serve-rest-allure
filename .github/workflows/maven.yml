@@ -37,15 +37,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: allure-history
+          publish_dir: allure-history    
     
-    
-    show-report-url:
-      needs: deploy-allure-report
-      runs-on: ubuntu-latest
-      
-      steps:
-        - name: Show Allure Report URL
-          run: |
-            echo "✅ O relatório Allure foi publicado com sucesso!"
-            echo "🔗 Acesse o relatório em: https://robsonaugusto.github.io/teste-api-serve-rest-allure/"
+   
