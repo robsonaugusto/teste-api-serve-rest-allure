@@ -18,7 +18,7 @@ jobs:
         run: mvn clean test
 
       - name: Generate Allure Report
-        run: mvn allure:aggregate allure:report  # Gera o relatório Allure
+        run: mvn allure:aggregate allure:report  # Gera o relatório Allure após os testes
 
       - name: List Allure results
         run: ls -la target/allure-results  # Verifica se o diretório de resultados foi criado
