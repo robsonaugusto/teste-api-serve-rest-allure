@@ -15,7 +15,10 @@ jobs:
           java-version: '21'
 
       - name: Run tests
-        run: mvn clean test  # Substituído para usar Maven em vez de Gradle
+        run: mvn clean test
+
+      - name: List Allure results
+        run: ls -la target/allure-results  # Verifica se os resultados dos testes estão no diretório correto
 
       - name: Load test report history
         uses: actions/checkout@v3
@@ -31,7 +34,7 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: build/allure-results
+          allure_results: target/allure-results  # Ajuste o caminho para garantir que está apontando para target/allure-results
 
       - name: Publish test report
         uses: peaceiris/actions-gh-pages@v3
