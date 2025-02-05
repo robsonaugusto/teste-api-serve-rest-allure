@@ -39,6 +39,10 @@ jobs:
       - name: Generate Allure Report
         run: mvn allure:aggregate allure:report
 
+      - name: Verificar conteúdo do diretório de relatórios
+        run: |
+          ls -la target/site/allure-report/
+
       - name: Upload Allure Report
         uses: actions/upload-artifact@v4
         with:
@@ -60,7 +64,7 @@ jobs:
           name: allure-report
           path: allure-report
 
-      - name: Verify and prepare Allure Report for deployment
+      - name: Verificar e preparar o relatório Allure para implantação
         run: |
           ls -la allure-report/
           if [ ! -f "allure-report/index.html" ]; then
