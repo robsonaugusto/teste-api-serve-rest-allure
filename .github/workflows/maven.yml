@@ -1,90 +1,51 @@
 name: Integração Contínua Java com Maven (REST-assured)
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-permissions:
-  contents: write
-
+on: [ push ]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          java-version: '21'
           distribution: 'zulu'
+          java-version: '17'
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
+      - name: Run tests
+        run: ./gradlew clean test
+
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          ref: gh-pages
+          path: gh-pages
 
-      - name: Build and run tests with Maven
-        run: mvn clean test
-
-      - name: Generate Allure Report
-        run: mvn allure:aggregate allure:report
-
-      - name: Verificar conteúdo do diretório de relatórios
-        run: |
-          ls -la target/site/allure-report/
-
-      - name: Upload Allure Report
-        uses: actions/upload-artifact@v4
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
         with:
-          name: allure-report
-          path: target/site/allure-report/
-          retention-days: 7
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
 
-  deploy-allure-report:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download Allure Report
-        uses: actions/download-artifact@v4
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
         with:
-          name: allure-report
-          path: allure-report
-
-      - name: Verificar e preparar o relatório Allure para implantação
-        run: |
-          ls -la allure-report/
-          if [ ! -f "allure-report/index.html" ]; then
-            echo "Erro: index.html não encontrado. Verificando arquivos..."
-            find allure-report/ -type f
-            exit 1
-          fi
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: allure-report/
-
-  show-report-url:
-    needs: deploy-allure-report
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Show Allure Report URL
-        run: |
-          echo "✅ O relatório Allure foi publicado com sucesso!"
-          echo "🔗 Acesse o relatório em: https://robsonaugusto.github.io/teste-api-serve-rest-allure/"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
+    
+    
+    show-report-url:
+      needs: deploy-allure-report
+      runs-on: ubuntu-latest
+      
+      steps:
+        - name: Show Allure Report URL
+          run: |
+            echo "✅ O relatório Allure foi publicado com sucesso!"
+            echo "🔗 Acesse o relatório em: https://robsonaugusto.github.io/teste-api-serve-rest-allure/"
