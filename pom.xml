@@ -125,6 +125,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
+                    <reportsDirectory>${project.build.directory}/allure-results</reportsDirectory> <!-- Diretório dos resultados -->
                     <testFailureIgnore>false</testFailureIgnore>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -146,26 +147,27 @@
                     </dependency>
                 </dependencies>
             </plugin>
-           <plugin>
-    <groupId>io.qameta.allure</groupId>
-    <artifactId>allure-maven</artifactId>
-    <version>${allure.maven.version}</version>
-    <executions>
-        <execution>
-            <goals>
-                <goal>aggregate</goal>
-                <goal>report</goal>
-            </goals>
-        </execution>
-    </executions>
-    <configuration>
-        <reportVersion>${allure.version}</reportVersion>
-        <!-- Diretório correto para gerar o relatório -->
-        <reportDirectory>${project.build.directory}/site/allure-report</reportDirectory>
-        <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
-    </configuration>
-         </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure.maven.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>aggregate</goal>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <reportVersion>${allure.version}</reportVersion>
+                    <!-- Diretório para gerar o relatório -->
+                    <reportDirectory>${project.build.directory}/site/allure-report</reportDirectory>
+                    <!-- Diretório onde os resultados serão armazenados -->
+                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
