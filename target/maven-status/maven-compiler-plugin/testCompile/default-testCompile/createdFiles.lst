@@ -1,0 +1,5 @@
+utils\AuthHelper.class
+utils\EmailUtils.class
+utils\JsonUtils.class
+core\BaseTest.class
+tests\Usuarios.class
