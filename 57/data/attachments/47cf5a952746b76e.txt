@@ -1,0 +1,7 @@
+{
+    "nome": "Fulano da Silva",
+    "email": "user_eb551132@qa.com.br",
+    "password": "teste",
+    "administrador": "true",
+    "_id": "jSB6XKqrxATISdew"
+}
