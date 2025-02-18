@@ -1,0 +1,4 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Feb 18 15:46:18 GMT 2025","Tue Feb 18 15:46:19 GMT 2025","195","","tests.UsuariosTest","","tests.UsuariosTest","testCadastrarUsuario","Cadastrar um novo usuário","Este teste cadastra um novo usuário na API Serverest e valida a resposta."
+"passed","Tue Feb 18 15:46:19 GMT 2025","Tue Feb 18 15:46:19 GMT 2025","114","","tests.UsuariosTest","","tests.UsuariosTest","testExcluirUsuarioCriado","Excluir usuário cadastrado","Este teste exclui um usuário previamente cadastrado usando o ID gerado no teste de criação."
+"passed","Tue Feb 18 15:46:19 GMT 2025","Tue Feb 18 15:46:19 GMT 2025","126","","tests.UsuariosTest","","tests.UsuariosTest","testBuscarUsuarioCriado","Buscar usuário cadastrado","Este teste busca um usuário previamente cadastrado usando o ID gerado no teste de criação."
