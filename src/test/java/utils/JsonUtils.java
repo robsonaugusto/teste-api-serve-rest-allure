@@ -11,7 +11,7 @@ public class JsonUtils {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             // Lê o JSON como um Map
-            Map<String, Object> jsonData = objectMapper.readValue(new File(filePath), Map.class);
+            Map jsonData = objectMapper.readValue(new File(filePath), Map.class);
 
             // Define um email aleatório
             jsonData.put("email", EmailUtils.generateRandomEmail());
