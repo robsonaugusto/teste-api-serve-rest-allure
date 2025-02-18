@@ -17,23 +17,11 @@ jobs:
       - name: Run tests
         run: mvn clean test
 
-      - name: Verificar geração de resultados do Allure
-        run: |
-          if [ -d target/allure-results ] && [ "$(ls -A target/allure-results)" ]; then
-            echo "Allure results encontrados."
-            ls -la target/allure-results
-          else
-            echo "Erro: Nenhum resultado do Allure encontrado!"
-            exit 1
-          fi
-
       - name: Generate Allure Report
-        run: mvn allure:aggregate
+        run: mvn allure:aggregate allure:report  # Gera o relatório Allure após os testes
 
-      - name: Mover Relatório para Publicação
-        run: |
-          mkdir -p allure-history
-          cp -R target/site/allure-maven-plugin/* allure-history/
+      - name: List Allure results
+        run: ls -la target/allure-results  # Verifica se o diretório de resultados foi criado
 
       - name: Load test report history
         uses: actions/checkout@v3
@@ -49,7 +37,7 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: target/allure-results
+          allure_results: target/allure-results  # Ajuste para o diretório correto
 
       - name: Publish test report
         uses: peaceiris/actions-gh-pages@v3
